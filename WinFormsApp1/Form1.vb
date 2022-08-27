@@ -3,9 +3,11 @@ Option Explicit On
 Option Strict On
 
 Public Class Form1
-    ''//NOTE: The circles in this code are bound to a rectangle but it should be fairly trivial to create a master circle and check that
 
+    ''//NOTE: The circles in this code are bound to a rectangle but it
+    '         should be fairly trivial to create a master circle and check that
     ''//Dimension of the bounding image
+
     Private Shared ReadOnly ImageMaxDimension As Integer = 500
     Private Shared ReadOnly MinCircleDiameter As Integer = 4
     Private Shared ReadOnly MaxCircleDiameter As Integer = 15
@@ -36,7 +38,7 @@ Public Class Form1
             For I = 1 To CircleCount
                 ''//We can only draw so many circles, this just gives us a counter so we know when we reach the limit for a given size
                 Trace.WriteLine(I)
-                Dim GiveUp = 100
+                Dim GiveUp = 0
 
                 ''//Create an infinite loop that we will break out of if we have found a circle that does not intersect anything
                 Do While GiveUp < 100
@@ -65,8 +67,13 @@ Public Class Form1
                     TextBox1.Text = "Drawing Circle :" & NumCircle
                 End If
 
-                ''/Draw the circle on the screen
-                G.FillEllipse(Brushes.BurlyWood, Re)
+                If I Mod 2 = 0 Then
+                    ''/Draw the circle on the screen
+                    G.FillEllipse(Brushes.BurlyWood, Re)
+                Else
+                    G.FillEllipse(Brushes.DarkCyan, Re)
+                End If
+
             Next
 
             ''//Draw the image to the picture box
@@ -80,8 +87,8 @@ Public Class Form1
         Dim aX = Math.Pow(r1.X - r2.X, 2)
         Dim aY = Math.Pow(r1.Y - r2.Y, 2)
         Dim Dif = Math.Abs(aX - aY)
-        Dim ra1 = r1.Width/2
-        Dim ra2 = r2.Width/2
+        Dim ra1 = r1.Width / 2
+        Dim ra2 = r2.Width / 2
         Dim raDif = Math.Pow(ra1 + ra2, 2)
         Return (raDif + PadCircle) > Dif
     End Function
