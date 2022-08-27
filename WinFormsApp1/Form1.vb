@@ -9,7 +9,7 @@ Public Class Form1
     Private Shared ReadOnly ImageMaxDimension As Integer = 500
     Private Shared ReadOnly MinCircleDiameter As Integer = 4
     Private Shared ReadOnly MaxCircleDiameter As Integer = 15
-    Private Shared ReadOnly CircleCount As Integer = 500
+    Private Shared ReadOnly CircleCount As Integer = 5000
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ''//Create a picture box to output to
@@ -30,12 +30,17 @@ Public Class Form1
         ''//Create a bitmap to draw on
         Dim TempB As New Bitmap(ImageMaxDimension, ImageMaxDimension)
         Using G = Graphics.FromImage(TempB)
+
+            Dim NumCircle = 0
+
             For I = 1 To CircleCount
                 ''//We can only draw so many circles, this just gives us a counter so we know when we reach the limit for a given size
                 Trace.WriteLine(I)
+                Dim GiveUp = 100
 
                 ''//Create an infinite loop that we will break out of if we have found a circle that does not intersect anything
-                Do While True
+                Do While GiveUp < 100
+                    GiveUp = GiveUp + 1
                     ''//Create a random diameter
                     W = R.Next(MinCircleDiameter, MaxCircleDiameter + 1)
                     ''//Create a random X,Y
@@ -54,8 +59,11 @@ Public Class Form1
                     Exit Do
                 Loop
 
-                ''//All the circle to our list
-                AllBounds.Add(Re)
+                If (GiveUp < 100) Then
+                    AllBounds.Add(Re)
+                    NumCircle = NumCircle + 1
+                    TextBox1.Text = "Drawing Circle :" & NumCircle
+                End If
 
                 ''/Draw the circle on the screen
                 G.FillEllipse(Brushes.BurlyWood, Re)
@@ -77,5 +85,7 @@ Public Class Form1
         Dim raDif = Math.Pow(ra1 + ra2, 2)
         Return (raDif + PadCircle) > Dif
     End Function
+
+
 End Class
 
