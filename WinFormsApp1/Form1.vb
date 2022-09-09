@@ -82,31 +82,17 @@ Public Class Form1
     End Sub
 
 
-    Private Function Intersects(x1 As Integer, y1 As Integer, x2 As Integer, y2 As Integer, r1 As Integer, r2 As Integer) As Boolean
-
-        Dim d = Math.Sqrt(
-            (x1 - x2) * (x1 - x2) +
-            (y1 - y2) * (y1 - y2))
-
-        If (d <= r1 - r2) Then
-            Trace.WriteLine("Circle B is inside A")
-            Return False
-        ElseIf (d <= r2 - r1) Then
-            Trace.WriteLine("Circle A is inside B")
-            Return False
-        ElseIf (d < r1 + r2) Then
-            Trace.WriteLine("Circle intersect to each other")
-            Return False
-        ElseIf (d = r1 + r2) Then
-            Trace.WriteLine("Circle touch to each other")
-            Return False
-        Else
-            Trace.WriteLine("Circle not touch to each other")
-            Return True
-        End If
-
+    Private Shared Function DoCirclesIntersect(r1 As RectangleF, r2 As RectangleF,
+                                               Optional ByVal PadCircle As Integer = 0) As Boolean
+        ''//This code is hopefully what @Sjoerd said in his post
+        Dim aX = Math.Pow(r1.X - r2.X, 2)
+        Dim aY = Math.Pow(r1.Y - r2.Y, 2)
+        Dim Dif = Math.Abs(aX - aY)
+        Dim ra1 = r1.Width / 2
+        Dim ra2 = r2.Width / 2
+        Dim raDif = Math.Pow(ra1 + ra2, 2)
+        Return (raDif + PadCircle) > Dif
     End Function
-
 
 
 End Class
